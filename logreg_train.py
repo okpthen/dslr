@@ -12,13 +12,21 @@ train_list = {
 LearningRate = 0.1
 AccRate = 0.985
 Max = 100
+ClassPassRate = 0.75
+
+# train_list = {
+#     "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Slytherin": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
+# }
 
 def estimateHouse(df, weight_data, house, index):
     z = weight_data.loc[house, "slice"]
     subjects = train_list[house]
     for subject in subjects: 
-        if pd.isna(df.loc[index, subject]):#欠損してたら0
-            return 0
+        if pd.isna(df.loc[index, subject]):
+            return 0 #欠損してたら0
         z += df.loc[index, subject] * weight_data.loc[house, subject]
     return 1 / (1 + np.exp(-z))
 
@@ -34,7 +42,7 @@ def new_weight(df, weight_data, house):
     for key in tmpSum.keys():
         weight_data.loc[house, key] -= LearningRate * tmpSum[key] / m
 
-    acc = sum((1 if (1 if estimateHouse(df, weight_data, house, i) >= 0.75 else 0) == df.loc[i, house] else 0) for i in range(m))
+    acc = sum((1 if (1 if estimateHouse(df, weight_data, house, i) >= ClassPassRate else 0) == df.loc[i, house] else 0) for i in range(m))
     if acc / m > AccRate:
         end = True
     print(acc / m)
