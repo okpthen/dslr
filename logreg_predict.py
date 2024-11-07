@@ -12,8 +12,8 @@ def prepare_data():
         data = df.iloc[:,col_index]
         std = df.iloc[:,col_index].std()
         mean = data.mean()
-        # std_data[df.columns[col_index]] = ((data - mean) / std).fillna(0)# 欠損を0
-        std_data[df.columns[col_index]] = ((data - mean) / std)#欠損処理なし
+        std_data[df.columns[col_index]] = ((data - mean) / std).fillna(0)# 欠損を0(平均点)
+        # std_data[df.columns[col_index]] = ((data - mean) / std)
 
     return std_data
 
