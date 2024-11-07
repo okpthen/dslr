@@ -22,7 +22,6 @@ def make_scatter_plot(df, categories, index_1, index_2):
     plt.title(df.columns[index_1] + " vs " + df.columns[index_2])
     plt.savefig(name)
     plt.close()
-    # print(index_1, index_2)
 
 
 def scatter_plot():

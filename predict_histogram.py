@@ -20,22 +20,17 @@ def make_hiotogram(data, categories, title):
     plt.ylabel('Number of people')
     plt.legend(title='Categories') 
     plt.title(title)
-    file_name = "histogram/" + title + ".png"
+    file_name = "predict/" + title + ".png"
     plt.savefig(file_name)
     plt.close()
     
 
 def histogram():
-    df = load("datasets/dataset_train.csv")
-    categories = df.iloc[:, 1] 
-    for col_index in range(6, df.shape[1]):
+    df = load("predict/precict.csv")
+    categories = df.iloc[:, 14]
+    for col_index in range(1, 14):
         data = df.iloc[:,col_index]
-        std = df.iloc[:,col_index].std()
-        # print(std)
-        mean = data.mean()
-        std_data = (data - mean) / std
-        make_hiotogram(std_data, categories, df.columns[col_index] + "_std")
-        # make_hiotogram(data, categories, df.columns[col_index])
+        make_hiotogram(data, categories, df.columns[col_index])
 
 
 histogram()
