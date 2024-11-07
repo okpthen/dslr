@@ -20,6 +20,12 @@ ClassPassRate = 0.75
 #     "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
 #     "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
 # }
+# train_list = {
+#     "Ravenclaw": ["Charms", "Potions", "Astronomy", "Herbology"],
+#     "Slytherin": ["Charms", "Potions", "Astronomy", "Herbology"],
+#     "Hufflepuff": ["Charms", "Potions", "Astronomy", "Herbology"],
+#     "Gryffindor": ["Charms", "Potions", "Astronomy", "Herbology"]
+# }
 
 def estimateHouse(df, weight_data, house, index):
     z = weight_data.loc[house, "slice"]

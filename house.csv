@@ -2,7 +2,7 @@
 0,Hufflepuff
 1,Ravenclaw
 2,Gryffindor
-3,Hufflepuff
+3,Slytherin
 4,Hufflepuff
 5,Slytherin
 6,Ravenclaw
@@ -23,7 +23,7 @@
 21,Slytherin
 22,Ravenclaw
 23,Ravenclaw
-24,Slytherin
+24,Gryffindor
 25,Hufflepuff
 26,Ravenclaw
 27,Slytherin
@@ -41,7 +41,7 @@
 39,Ravenclaw
 40,Ravenclaw
 41,Slytherin
-42,Gryffindor
+42,Hufflepuff
 43,Slytherin
 44,Hufflepuff
 45,Ravenclaw
@@ -55,7 +55,7 @@
 53,Ravenclaw
 54,Hufflepuff
 55,Slytherin
-56,Hufflepuff
+56,Slytherin
 57,Ravenclaw
 58,Hufflepuff
 59,Gryffindor
@@ -65,7 +65,7 @@
 63,Hufflepuff
 64,Ravenclaw
 65,Hufflepuff
-66,Ravenclaw
+66,Hufflepuff
 67,Ravenclaw
 68,Hufflepuff
 69,Ravenclaw
@@ -73,7 +73,7 @@
 71,Slytherin
 72,Gryffindor
 73,Ravenclaw
-74,Ravenclaw
+74,Gryffindor
 75,Hufflepuff
 76,Hufflepuff
 77,Gryffindor
@@ -97,7 +97,7 @@
 95,Ravenclaw
 96,Gryffindor
 97,Slytherin
-98,Ravenclaw
+98,Hufflepuff
 99,Ravenclaw
 100,Hufflepuff
 101,Hufflepuff
@@ -106,9 +106,9 @@
 104,Ravenclaw
 105,Ravenclaw
 106,Hufflepuff
-107,Hufflepuff
+107,Slytherin
 108,Slytherin
-109,Slytherin
+109,Hufflepuff
 110,Hufflepuff
 111,Slytherin
 112,Gryffindor
@@ -116,7 +116,7 @@
 114,Hufflepuff
 115,Ravenclaw
 116,Ravenclaw
-117,Ravenclaw
+117,Gryffindor
 118,Slytherin
 119,Ravenclaw
 120,Gryffindor
@@ -145,7 +145,7 @@
 143,Ravenclaw
 144,Gryffindor
 145,Ravenclaw
-146,Gryffindor
+146,Hufflepuff
 147,Hufflepuff
 148,Hufflepuff
 149,Ravenclaw
@@ -157,7 +157,7 @@
 155,Gryffindor
 156,Hufflepuff
 157,Slytherin
-158,Gryffindor
+158,Hufflepuff
 159,Ravenclaw
 160,Ravenclaw
 161,Hufflepuff
@@ -166,7 +166,7 @@
 164,Ravenclaw
 165,Slytherin
 166,Hufflepuff
-167,Ravenclaw
+167,Hufflepuff
 168,Hufflepuff
 169,Hufflepuff
 170,Gryffindor
@@ -175,12 +175,12 @@
 173,Slytherin
 174,Hufflepuff
 175,Gryffindor
-176,Ravenclaw
+176,Gryffindor
 177,Hufflepuff
 178,Hufflepuff
 179,Slytherin
 180,Ravenclaw
-181,Slytherin
+181,Ravenclaw
 182,Gryffindor
 183,Slytherin
 184,Gryffindor
@@ -230,7 +230,7 @@
 228,Hufflepuff
 229,Hufflepuff
 230,Gryffindor
-231,Ravenclaw
+231,Hufflepuff
 232,Slytherin
 233,Ravenclaw
 234,Hufflepuff
@@ -247,11 +247,11 @@
 245,Gryffindor
 246,Ravenclaw
 247,Ravenclaw
-248,Slytherin
+248,Hufflepuff
 249,Hufflepuff
 250,Slytherin
 251,Slytherin
-252,Ravenclaw
+252,Gryffindor
 253,Hufflepuff
 254,Ravenclaw
 255,Ravenclaw
@@ -265,9 +265,9 @@
 263,Hufflepuff
 264,Hufflepuff
 265,Ravenclaw
-266,Slytherin
+266,Hufflepuff
 267,Gryffindor
-268,Hufflepuff
+268,Ravenclaw
 269,Ravenclaw
 270,Hufflepuff
 271,Slytherin
@@ -275,7 +275,7 @@
 273,Gryffindor
 274,Ravenclaw
 275,Hufflepuff
-276,Gryffindor
+276,Ravenclaw
 277,Gryffindor
 278,Gryffindor
 279,Hufflepuff
@@ -283,10 +283,10 @@
 281,Hufflepuff
 282,Hufflepuff
 283,Ravenclaw
-284,Gryffindor
+284,Hufflepuff
 285,Ravenclaw
 286,Ravenclaw
-287,Ravenclaw
+287,Slytherin
 288,Gryffindor
 289,Ravenclaw
 290,Gryffindor
@@ -294,7 +294,7 @@
 292,Ravenclaw
 293,Hufflepuff
 294,Hufflepuff
-295,Slytherin
+295,Gryffindor
 296,Slytherin
 297,Hufflepuff
 298,Hufflepuff
@@ -354,7 +354,7 @@
 352,Hufflepuff
 353,Ravenclaw
 354,Slytherin
-355,Hufflepuff
+355,Slytherin
 356,Hufflepuff
 357,Hufflepuff
 358,Gryffindor
@@ -366,7 +366,7 @@
 364,Hufflepuff
 365,Gryffindor
 366,Hufflepuff
-367,Slytherin
+367,Hufflepuff
 368,Gryffindor
 369,Hufflepuff
 370,Slytherin
@@ -398,4 +398,4 @@
 396,Hufflepuff
 397,Hufflepuff
 398,Ravenclaw
-399,Hufflepuff
+399,Ravenclaw
