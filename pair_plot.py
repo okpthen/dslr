@@ -2,6 +2,7 @@ from load import load
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 color_map = {
         'Gryffindor': 'red',
         'Hufflepuff': '#ffff00',

@@ -1,5 +1,7 @@
 from load import load
 import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 color_map = {
@@ -31,6 +33,12 @@ def histogram():
     for col_index in range(1, 14):
         data = df.iloc[:,col_index]
         make_hiotogram(data, categories, df.columns[col_index])
+
+    data = df.iloc[:, 1:14]
+    data['House'] = df.iloc[:, 14]
+    sns.pairplot(data, hue='House', palette=color_map, plot_kws={'alpha': 0.5})
+    plt.title("pair plot")
+    plt.savefig("predict_pair_plot.png")
 
 
 histogram()
