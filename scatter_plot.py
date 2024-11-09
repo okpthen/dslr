@@ -10,7 +10,6 @@ color_map = {
 
 
 def make_scatter_plot(df, categories, index_1, index_2):
-    # for category in color_map.keys():
     for category, color in color_map.items():
         category_data = df[categories == category]
         plt.scatter(category_data.iloc[:, index_1], category_data.iloc[:, index_2],

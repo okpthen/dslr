@@ -32,7 +32,7 @@ def estimateHouse(df, weight_data, house, index):
     subjects = train_list[house]
     for subject in subjects: 
         if pd.isna(df.loc[index, subject]):
-            return 0 #欠損してたら0
+            return 0
         z += df.loc[index, subject] * weight_data.loc[house, subject]
     return 1 / (1 + np.exp(-z))
 
