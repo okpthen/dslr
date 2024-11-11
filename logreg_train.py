@@ -3,23 +3,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-train_list = {
-    "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes"],
-    "Slytherin": ["Charms", "Divination", "Potions"],
-    "Hufflepuff": ["Herbology", "Astronomy", "Ancient Runes"],
-    "Gryffindor": ["Flying", "Transfiguration", "History of Magic"]
-}
+# train_list = {
+#     "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes"],
+#     "Slytherin": ["Charms", "Divination", "Potions"],
+#     "Hufflepuff": ["Herbology", "Astronomy", "Ancient Runes"],
+#     "Gryffindor": ["Flying", "Transfiguration", "History of Magic"]
+# }
 LearningRate = 0.1
 AccRate = 0.985
 Max = 100
 ClassPassRate = 0.75
+Diff = 1
 
-# train_list = {
-#     "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-#     "Slytherin": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-#     "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-#     "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
-# }
+train_list = {
+    "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+    "Slytherin": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+    "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+    "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
+}
 # train_list = {
 #     "Ravenclaw": ["Charms", "Potions", "Astronomy", "Herbology"],
 #     "Slytherin": ["Charms", "Potions", "Astronomy", "Herbology"],
@@ -37,7 +38,7 @@ def estimateHouse(df, weight_data, house, index):
     return 1 / (1 + np.exp(-z))
 
 
-def new_weight(df, weight_data, house):
+def new_weight(df, weight_data, house, pre):
     end = False
     tmpSum = {}
     m = len(df)
@@ -48,17 +49,27 @@ def new_weight(df, weight_data, house):
     for key in tmpSum.keys():
         weight_data.loc[house, key] -= LearningRate * tmpSum[key] / m
 
-    acc = sum((1 if (1 if estimateHouse(df, weight_data, house, i) >= ClassPassRate else 0) == df.loc[i, house] else 0) for i in range(m))
-    if acc / m > AccRate:
+    # acc = sum((1 if (1 if estimateHouse(df, weight_data, house, i) >= ClassPassRate else 0) == df.loc[i, house] else 0) for i in range(m))
+    # if acc / m > AccRate:
+    #     end = True
+    # print(acc / m)
+    acc = 0
+    for i in range(m):
+        y = estimateHouse(df, weight_data, house, i)
+        y_true = df.loc[i, house]
+        acc += y_true * np.log(y) + (1 - y_true) * np.log(1 - y)
+    print(acc - pre)
+    if abs(pre - acc) <= Diff:
         end = True
-    print(acc / m)
-    return end, weight_data
+    pre = acc
+    return end, weight_data, pre
     
 
 def train(df, weight_data, key):
     number = 1
+    pre = 0
     while True:
-        end, weight_data = new_weight(df, weight_data, key)
+        end, weight_data , pre = new_weight(df, weight_data, key, pre)
         if end == True:
             break
         if number == Max:
