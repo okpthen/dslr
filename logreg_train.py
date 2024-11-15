@@ -3,24 +3,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# train_list = {
-#     "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes"],
-#     "Slytherin": ["Charms", "Divination", "Potions"],
-#     "Hufflepuff": ["Herbology", "Astronomy", "Ancient Runes"],
-#     "Gryffindor": ["Flying", "Transfiguration", "History of Magic"]
-# }
+train_list = {
+    "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes"],
+    "Slytherin": ["Charms", "Divination", "Potions"],
+    "Hufflepuff": ["Herbology", "Astronomy", "Ancient Runes"],
+    "Gryffindor": ["Flying", "Transfiguration", "History of Magic"]
+}
 LearningRate = 0.1
 AccRate = 0.985
 Max = 100
 ClassPassRate = 0.75
 Diff = 1
 
-train_list = {
-    "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-    "Slytherin": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-    "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
-    "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
-}
+# train_list = {
+#     "Ravenclaw": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Slytherin": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Hufflepuff": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"],
+#     "Gryffindor": ["Charms", "Muggle Studies", "Ancient Runes","Flying","Transfiguration","History of Magic", "Herbology", "Astronomy", "Divination", "Potions"]
+# }
 # train_list = {
 #     "Ravenclaw": ["Charms", "Potions", "Astronomy", "Herbology"],
 #     "Slytherin": ["Charms", "Potions", "Astronomy", "Herbology"],
@@ -31,51 +31,62 @@ train_list = {
 def estimateHouse(df, weight_data, house, index):
     z = weight_data.loc[house, "slice"]
     subjects = train_list[house]
-    for subject in subjects: 
-        if pd.isna(df.loc[index, subject]):
-            return 0
-        z += df.loc[index, subject] * weight_data.loc[house, subject]
+
+    if df.loc[index, subjects].isna().any():
+        return 0
+
+    df_values = df.loc[index, subjects].to_numpy()
+    weights = weight_data.loc[house, subjects].to_numpy()
+    z += np.dot(df_values, weights)
     return 1 / (1 + np.exp(-z))
 
 
-def new_weight(df, weight_data, house, pre):
-    end = False
-    tmpSum = {}
+def new_weight(df, weight_data, house):
     m = len(df)
-    tmpSum["slice"] = sum(estimateHouse(df, weight_data, house, i) - df.loc[i, house] for i in range(m))
-    for subject in train_list[house]:
-        tmpSum[subject] = sum((estimateHouse(df, weight_data, house, i) - df.loc[i, house]) * df.loc[i, subject] for i in range(m))
+    subjects = train_list[house]
     
-    for key in tmpSum.keys():
-        weight_data.loc[house, key] -= LearningRate * tmpSum[key] / m
+    # 全行に対する予測値を一括で計算
+    estimates = np.array([estimateHouse(df, weight_data, house, i) for i in range(m)])
+    actuals = df[house].to_numpy()
+    
+    # sliceの更新
+    tmpSum_bias = np.sum(estimates - actuals)
 
-    # acc = sum((1 if (1 if estimateHouse(df, weight_data, house, i) >= ClassPassRate else 0) == df.loc[i, house] else 0) for i in range(m))
-    # if acc / m > AccRate:
-    #     end = True
-    # print(acc / m)
-    acc = 0
-    for i in range(m):
-        y = estimateHouse(df, weight_data, house, i)
-        y_true = df.loc[i, house]
-        acc += y_true * np.log(y) + (1 - y_true) * np.log(1 - y)
-    print(acc - pre)
-    if abs(pre - acc) <= Diff:
-        end = True
-    pre = acc
-    return end, weight_data, pre
+    # 各重みの更新（ベクトル化計算）
+    df_values = df[subjects].to_numpy()  # 必要なデータをNumPy配列に変換
+    tmpSum_weights = np.dot((estimates - actuals), df_values)
+
+    # 更新（ベクトル化）
+    weight_data.loc[house, "slice"] -= LearningRate * tmpSum_bias / m
+    weight_data.loc[house, subjects] -= LearningRate * tmpSum_weights / m
+
+    return weight_data
     
 
 def train(df, weight_data, key):
     number = 1
-    pre = 0
-    while True:
-        end, weight_data , pre = new_weight(df, weight_data, key, pre)
-        if end == True:
+    prev_loss = float('inf')
+
+    while number <= Max:
+        # 重み更新
+        weight_data = new_weight(df, weight_data, key)
+
+        # 損失関数（対数損失）を計算
+        m = len(df)
+        estimates = np.array([estimateHouse(df, weight_data, key, i) for i in range(m)])
+        actuals = df[key].to_numpy()
+        loss = -np.sum(actuals * np.log(estimates) + (1 - actuals) * np.log(1 - estimates)) / m
+
+        # 収束判定
+        if abs(prev_loss - loss) < Diff:
             break
-        if number == Max:
-            break
+        prev_loss = loss
+
+        # 進捗出力
+        print(f"Iteration {number}, Loss: {loss}")
         number += 1
-    print(key, number)
+
+    print(f"{key} training completed in {number} iterations")
     return weight_data
 
 

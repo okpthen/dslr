@@ -18,21 +18,16 @@ def prepare_data():
     return std_data
 
 def longreg_predict():
-    i = 0
     df = prepare_data()
     weight_data = pd.read_csv("predict/wehgit_data.csv", index_col=0)
     estimate = {}
     for index in range(len(df)):
         for key in train_list.keys():
             estimate[key] = estimateHouse(df, weight_data, key, index)
-        if max(estimate.values()) < 0.75:
-            i += 1
-        # print(max(estimate.values()))
-        # print(estimate["Ravenclaw"], estimate["Slytherin"],estimate["Hufflepuff"],estimate["Gryffindor"],)
         estimate_series = pd.Series(estimate)
         max_key = estimate_series.idxmax()
         df.loc[index, "Hogwarts House"] = max_key
-    print(f"under 75% = {i}/{len(df)}({i / len(df) * 100}%)")
+    print(f"predict completed!")
     df.to_csv("predict/precict.csv")
     house_data = df["Hogwarts House"]
     house_data.to_csv("houses.csv")
