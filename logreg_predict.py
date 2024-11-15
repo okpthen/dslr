@@ -35,6 +35,6 @@ def longreg_predict():
     print(f"under 75% = {i}/{len(df)}({i / len(df) * 100}%)")
     df.to_csv("predict/precict.csv")
     house_data = df["Hogwarts House"]
-    house_data.to_csv("house.csv")
+    house_data.to_csv("houses.csv")
 
 longreg_predict()
